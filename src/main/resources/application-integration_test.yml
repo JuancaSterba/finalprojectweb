@@ -4,7 +4,7 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:agencia_turismo
+    url: jdbc:h2:mem:logistic_project
     initialization-mode: always
     username: sa
     password:
