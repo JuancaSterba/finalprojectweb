@@ -1,4 +1,4 @@
-package com.itec1.FinalProjectWeb;
+package com.itec1.finalprojectweb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,11 +1,11 @@
-package com.itec1.FinalProjectWeb.config;
+package com.itec1.finalprojectweb.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper(){

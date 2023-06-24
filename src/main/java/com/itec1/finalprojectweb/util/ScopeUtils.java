@@ -1,4 +1,4 @@
-package com.itec1.FinalProjectWeb.util;
+package com.itec1.finalprojectweb.util;
 
 import org.apache.commons.lang3.StringUtils;
 

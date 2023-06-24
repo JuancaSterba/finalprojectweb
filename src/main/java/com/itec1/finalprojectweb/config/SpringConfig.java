@@ -1,4 +1,4 @@
-package com.itec1.FinalProjectWeb.config;
+package com.itec1.finalprojectweb.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@ComponentScan("com.itec1.FinalProjectWeb")
+@ComponentScan("com.itec1.finalprojectweb")
 @Configuration
 @EnableAutoConfiguration
 public class SpringConfig implements WebMvcConfigurer {
