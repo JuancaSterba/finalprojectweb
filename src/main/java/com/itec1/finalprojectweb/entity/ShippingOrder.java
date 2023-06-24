@@ -45,10 +45,6 @@ public class ShippingOrder {
     @Column(nullable = false)
     private OrderStatus orderStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ShippingStatus shippingStatus;
-
     private String number;
     private LocalDate startDate;
     private LocalDate finishDate;
