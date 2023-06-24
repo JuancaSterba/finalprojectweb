@@ -1,4 +1,4 @@
-package com.itec1.FinalProjectWeb.entity;
+package com.itec1.finalprojectweb.entity;
 
 public class CurrierType {
 

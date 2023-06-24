@@ -1,8 +1,7 @@
-package com.itec1.FinalProjectWeb;
+package com.itec1.finalprojectweb;
 
-import com.itec1.FinalProjectWeb.config.SpringConfig;
-import com.itec1.FinalProjectWeb.util.ScopeUtils;
-import org.springframework.boot.SpringApplication;
+import com.itec1.finalprojectweb.config.SpringConfig;
+import com.itec1.finalprojectweb.util.ScopeUtils;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
