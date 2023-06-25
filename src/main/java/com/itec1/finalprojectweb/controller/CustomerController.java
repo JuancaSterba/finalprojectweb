@@ -1,6 +1,7 @@
 package com.itec1.finalprojectweb.controller;
 
 import com.itec1.finalprojectweb.dto.CustomerDTO;
+import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.service.ICustomerService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
         try {
             List<CustomerDTO> customers = customerService.findAll();
@@ -43,7 +44,7 @@ public class CustomerController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
         try {
             boolean isValid = customerService.validateDTO(customerDTO);
@@ -93,6 +94,18 @@ public class CustomerController {
             }
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomerById(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+        try {
+            CustomerDTO updatedCustomer = customerService.updateById(id, customerDTO);
+            return ResponseEntity.ok(updatedCustomer);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

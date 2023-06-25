@@ -2,6 +2,7 @@ package com.itec1.finalprojectweb.service;
 
 import com.itec1.finalprojectweb.dto.CustomerDTO;
 import com.itec1.finalprojectweb.entity.Customer;
+import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.repository.ICustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
@@ -47,7 +48,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public boolean validateDTO(CustomerDTO customerDTO) {
+    public boolean validateDTO(CustomerDTO customerDTO) throws DataAccessException {
         if (customerRepository.findByCuit(customerDTO.getCuit()) != null) {
             throw new DuplicateKeyException("Customer with CUIT already exists: " + customerDTO.getCuit());
         }
@@ -63,7 +64,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO findByCuit(String cuit) {
+    public CustomerDTO findByCuit(String cuit) throws DataAccessException {
         Customer customer = customerRepository.findByCuit(cuit);
         if (customer != null) {
             return mapper.map(customer, CustomerDTO.class);
@@ -72,11 +73,30 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO findByEmail(String email) {
+    public CustomerDTO findByEmail(String email) throws DataAccessException {
         Customer customer = customerRepository.findByEmail(email);
         if (customer != null) {
             return mapper.map(customer, CustomerDTO.class);
         }
         return null;
+    }
+
+    @Override
+    public CustomerDTO updateById(Long id, CustomerDTO customerDTO) throws DataAccessException {
+        Customer existingCustomer = customerRepository.findById(id).orElse(null);
+        if (existingCustomer != null) {
+            existingCustomer.setName(customerDTO.getName());
+            existingCustomer.setCuit(customerDTO.getCuit());
+            existingCustomer.setDni(customerDTO.getDni());
+            existingCustomer.setAddress(customerDTO.getAddress());
+            existingCustomer.setPhoneNumber(customerDTO.getPhoneNumber());
+            existingCustomer.setEmail(customerDTO.getEmail());
+
+            existingCustomer = customerRepository.save(existingCustomer);
+
+            return mapper.map(existingCustomer, CustomerDTO.class);
+        } else {
+            throw new NotFoundException("Customer not found with ID: " + id);
+        }
     }
 }
