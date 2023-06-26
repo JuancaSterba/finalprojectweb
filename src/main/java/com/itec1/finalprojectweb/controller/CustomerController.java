@@ -1,6 +1,7 @@
 package com.itec1.finalprojectweb.controller;
 
 import com.itec1.finalprojectweb.dto.CustomerDTO;
+import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
 import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.service.ICustomerService;
 import org.springframework.dao.DataAccessException;
@@ -106,6 +107,16 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{customerId}/shipping-orders")
+    public ResponseEntity<List<ShippingOrderDTO>> getShippingOrdersByCustomerId(@PathVariable Long customerId) {
+        try {
+            List<ShippingOrderDTO> shippingOrders = customerService.getShippingOrdersByCustomerId(customerId);
+            return ResponseEntity.ok(shippingOrders);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

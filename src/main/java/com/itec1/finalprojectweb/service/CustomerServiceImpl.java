@@ -1,9 +1,12 @@
 package com.itec1.finalprojectweb.service;
 
 import com.itec1.finalprojectweb.dto.CustomerDTO;
+import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
 import com.itec1.finalprojectweb.entity.Customer;
+import com.itec1.finalprojectweb.entity.ShippingOrder;
 import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.repository.ICustomerRepository;
+import com.itec1.finalprojectweb.repository.IShippingOrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,10 +19,12 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements ICustomerService {
 
     private final ICustomerRepository customerRepository;
+    private final IShippingOrderRepository shippingOrderRepository;
     private final ModelMapper mapper;
 
-    public CustomerServiceImpl(ICustomerRepository customerRepository, ModelMapper mapper) {
+    public CustomerServiceImpl(ICustomerRepository customerRepository, IShippingOrderRepository shippingOrderRepository, ModelMapper mapper) {
         this.customerRepository = customerRepository;
+        this.shippingOrderRepository = shippingOrderRepository;
         this.mapper = mapper;
     }
 
@@ -98,5 +103,13 @@ public class CustomerServiceImpl implements ICustomerService {
         } else {
             throw new NotFoundException("Customer not found with ID: " + id);
         }
+    }
+
+    @Override
+    public List<ShippingOrderDTO> getShippingOrdersByCustomerId(Long customerId) throws DataAccessException {
+        List<ShippingOrder> shippingOrders = shippingOrderRepository.findByCustomerId(customerId);
+        return shippingOrders.stream()
+                .map(shippingOrder -> mapper.map(shippingOrder, ShippingOrderDTO.class))
+                .collect(Collectors.toList());
     }
 }
