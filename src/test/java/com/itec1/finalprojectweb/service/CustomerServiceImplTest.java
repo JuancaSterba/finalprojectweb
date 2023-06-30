@@ -120,8 +120,7 @@ class CustomerServiceImplTest {
                 1L, "John Doe", "123456789", "1234567890", "123 Main St", "1234567890", "john.doe@example.com");
 
         when(modelMapper.map(customerDTO, Customer.class)).thenReturn(customer);
-        when(customerRepository.save(customer)).thenThrow(new DataAccessException("...") {
-        });
+        when(customerRepository.save(customer)).thenThrow(new DataAccessException("...") {});
 
         assertThrows(RuntimeException.class, () -> customerService.save(customerDTO));
 
