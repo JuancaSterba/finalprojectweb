@@ -7,12 +7,14 @@ import com.itec1.finalprojectweb.entity.ShippingOrder;
 import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.repository.ICustomerRepository;
 import com.itec1.finalprojectweb.repository.IShippingOrderRepository;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,16 +31,18 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO findById(Long id) throws DataAccessException {
-        Customer customer = customerRepository.findById(id).orElse(null);
-        if (customer != null) {
+    public CustomerDTO findOne(Long id) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
             return mapper.map(customer, CustomerDTO.class);
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override
-    public List<CustomerDTO> findAll() throws DataAccessException {
+    public List<CustomerDTO> findAll() {
         List<Customer> customers = customerRepository.findAll();
         return customers.stream()
                 .map(customer -> mapper.map(customer, CustomerDTO.class))
@@ -46,14 +50,18 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO save(CustomerDTO customerDTO) throws DataAccessException {
-        Customer customer = mapper.map(customerDTO, Customer.class);
-        customer = customerRepository.save(customer);
-        return mapper.map(customer, CustomerDTO.class);
+    public CustomerDTO save(CustomerDTO customerDTO) {
+        try {
+            Customer customer = mapper.map(customerDTO, Customer.class);
+            customer = customerRepository.save(customer);
+            return mapper.map(customer, CustomerDTO.class);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error al guardar el cliente", e);
+        }
     }
 
     @Override
-    public boolean validateDTO(CustomerDTO customerDTO) throws DataAccessException {
+    public boolean validateDTO(CustomerDTO customerDTO) {
         if (customerRepository.findByCuit(customerDTO.getCuit()) != null) {
             throw new DuplicateKeyException("Customer with CUIT already exists: " + customerDTO.getCuit());
         }
@@ -64,12 +72,16 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void deleteById(Long id) throws DataAccessException {
-        customerRepository.deleteById(id);
+    public void deleteById(Long id) {
+        try{
+            customerRepository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error al guardar el cliente", e);
+        }
     }
 
     @Override
-    public CustomerDTO findByCuit(String cuit) throws DataAccessException {
+    public CustomerDTO findByCuit(String cuit) {
         Customer customer = customerRepository.findByCuit(cuit);
         if (customer != null) {
             return mapper.map(customer, CustomerDTO.class);
@@ -78,7 +90,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO findByEmail(String email) throws DataAccessException {
+    public CustomerDTO findByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email);
         if (customer != null) {
             return mapper.map(customer, CustomerDTO.class);
@@ -106,7 +118,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public List<ShippingOrderDTO> getShippingOrdersByCustomerId(Long customerId) throws DataAccessException {
+    public List<ShippingOrderDTO> getShippingOrdersByCustomerId(Long customerId) {
         List<ShippingOrder> shippingOrders = shippingOrderRepository.findByCustomerId(customerId);
         return shippingOrders.stream()
                 .map(shippingOrder -> mapper.map(shippingOrder, ShippingOrderDTO.class))

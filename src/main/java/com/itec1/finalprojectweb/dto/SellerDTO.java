@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SellerDTO {
-    private Integer id;
+    private Long id;
     private String cuit;
     private String name;
     private String address;

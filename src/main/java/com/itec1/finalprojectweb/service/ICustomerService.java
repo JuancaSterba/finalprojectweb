@@ -7,12 +7,12 @@ import org.springframework.dao.DataAccessException;
 import java.util.List;
 
 public interface ICustomerService extends ICRUDService<CustomerDTO, CustomerDTO> {
-    CustomerDTO findByCuit(String cuit) throws DataAccessException;
+    CustomerDTO findByCuit(String cuit);
 
-    CustomerDTO findByEmail(String email) throws DataAccessException;
+    CustomerDTO findByEmail(String email);
 
     CustomerDTO updateById(Long id, CustomerDTO customerDTO) throws DataAccessException;
 
-    List<ShippingOrderDTO> getShippingOrdersByCustomerId(Long customerId) throws DataAccessException;
+    List<ShippingOrderDTO> getShippingOrdersByCustomerId(Long customerId);
 
 }

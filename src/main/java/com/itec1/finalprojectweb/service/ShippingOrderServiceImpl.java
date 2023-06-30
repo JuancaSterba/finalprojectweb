@@ -21,7 +21,7 @@ public class ShippingOrderServiceImpl implements IShippingOrderService {
     }
 
     @Override
-    public ShippingOrderDTO findById(Long id) throws DataAccessException {
+    public ShippingOrderDTO findOne(Long id) throws DataAccessException {
         ShippingOrder shippingOrder = shippingOrderRepository.findById(id).orElse(null);
         if (shippingOrder != null) {
             return mapper.map(shippingOrder, ShippingOrderDTO.class);

@@ -13,10 +13,10 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
 
 server:
   port: 8083 # no cambiar en prod

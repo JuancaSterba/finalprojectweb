@@ -4,6 +4,7 @@ import com.itec1.finalprojectweb.config.SpringConfig;
 import com.itec1.finalprojectweb.util.ScopeUtils;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class FinalProjectWebApplication {

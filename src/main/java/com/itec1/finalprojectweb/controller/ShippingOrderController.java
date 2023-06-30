@@ -22,7 +22,7 @@ public class ShippingOrderController {
     @GetMapping("/{id}")
     public ResponseEntity<ShippingOrderDTO> getShippingOrderById(@PathVariable Long id) {
         try {
-            ShippingOrderDTO shippingOrderDTO = shippingOrderService.findById(id);
+            ShippingOrderDTO shippingOrderDTO = shippingOrderService.findOne(id);
             if (shippingOrderDTO != null) {
                 return ResponseEntity.ok(shippingOrderDTO);
             } else {
