@@ -13,7 +13,7 @@ import lombok.*;
 public class OrderLine {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -26,5 +26,7 @@ public class OrderLine {
 
     @Column(nullable = false)
     private int quantity;
+
+    private int rating;
 
 }

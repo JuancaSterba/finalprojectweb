@@ -11,4 +11,5 @@ public class OrderLineDTO {
     private Long id;
     private ProductDTO product;
     private int quantity;
+    private int rating;
 }

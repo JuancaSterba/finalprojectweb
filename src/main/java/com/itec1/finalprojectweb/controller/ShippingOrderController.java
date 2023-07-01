@@ -1,6 +1,7 @@
 package com.itec1.finalprojectweb.controller;
 
 import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
+import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.service.IShippingOrderService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,8 @@ public class ShippingOrderController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdShippingOrder);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (InvalidDataException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -7,6 +7,7 @@ public enum OrderStatus {
     COMPLETED, // Completada
     CANCELLED, // Cancelada
     WAITING_FOR_DISPATCH, // Esperando despacho
+    DISPATCHED, // Esperando despacho
     IN_TRANSIT, // En tránsito
     DELIVERED, // Entregada
     RETURNED; // Devuelta

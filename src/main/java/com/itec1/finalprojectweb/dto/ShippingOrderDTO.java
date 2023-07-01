@@ -23,4 +23,5 @@ public class ShippingOrderDTO {
     private String number;
     private LocalDate startDate;
     private LocalDate finishDate;
+    private int currierRating;
 }

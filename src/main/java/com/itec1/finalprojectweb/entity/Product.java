@@ -13,7 +13,7 @@ import lombok.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -23,12 +23,10 @@ public class Product {
     private float width; // ancho
     private float weight; // peso
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id", nullable = false)
-    private Seller seller;
+    @Column(name = "seller_id", nullable = false)
+    private Long sellerId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private ProductCategory category;
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId;
 
 }

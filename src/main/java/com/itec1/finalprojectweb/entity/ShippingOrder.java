@@ -16,7 +16,7 @@ import java.util.List;
 public class ShippingOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -48,5 +48,6 @@ public class ShippingOrder {
     private String number;
     private LocalDate startDate;
     private LocalDate finishDate;
+    private int currierRating;
 
 }

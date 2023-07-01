@@ -14,6 +14,6 @@ public class ProductDTO {
     private float length;
     private float width;
     private float weight;
-    private SellerDTO seller;
-    private ProductCategoryDTO category;
+    private Long sellerId;
+    private Long productCategoryID;
 }

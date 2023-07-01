@@ -2,6 +2,7 @@ package com.itec1.finalprojectweb.controller;
 
 import com.itec1.finalprojectweb.dto.CustomerDTO;
 import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
+import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.service.ICustomerService;
 import org.springframework.dao.DataAccessException;
@@ -55,6 +56,8 @@ public class CustomerController {
             } else {
                 return ResponseEntity.badRequest().build();
             }
+        } catch (InvalidDataException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
