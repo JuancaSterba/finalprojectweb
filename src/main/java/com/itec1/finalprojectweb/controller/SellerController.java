@@ -48,7 +48,7 @@ public class SellerController {
     @PutMapping("/{id}")
     public ResponseEntity<SellerDTO> updateSeller(@PathVariable Long id, @RequestBody SellerDTO sellerDTO) {
         try {
-            SellerDTO updatedSeller = sellerService.updateById(sellerDTO, id);
+            SellerDTO updatedSeller = sellerService.update(sellerDTO, id);
             return ResponseEntity.ok(updatedSeller);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();

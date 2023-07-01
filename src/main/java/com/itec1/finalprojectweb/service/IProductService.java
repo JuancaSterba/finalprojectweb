@@ -10,6 +10,4 @@ public interface IProductService extends ICRUDService<ProductDTO, ProductDTO> {
     List<ProductDTO> findByCategoryId(Long categoryId);
     List<ProductDTO> findBySellerIdAndCategoryId(Long sellerId, Long categoryId);
 
-    ProductDTO updateById(Long id, ProductDTO productDTO) throws DataAccessException;
-
 }

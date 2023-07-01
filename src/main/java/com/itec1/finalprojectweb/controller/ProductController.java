@@ -4,6 +4,7 @@ import com.itec1.finalprojectweb.dto.ProductDTO;
 import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.service.IProductService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,11 +46,13 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
         try {
-            ProductDTO updatedProduct = productService.updateById(id, productDTO);
+            ProductDTO updatedProduct = productService.update(productDTO, id);
             return ResponseEntity.ok(updatedProduct);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
-        } catch (Exception e) {
+        } catch (InvalidDataException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

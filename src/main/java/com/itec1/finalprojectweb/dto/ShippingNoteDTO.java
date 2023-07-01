@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShippingNoteDTO {
-    private Long id;
     private String shippingCode;
     private LocalDate noteDate;
     private CurrierDTO currier;

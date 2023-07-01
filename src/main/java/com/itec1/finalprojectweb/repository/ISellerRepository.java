@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ISellerRepository extends JpaRepository<Seller, Long> {
     Seller findByCuit(String cuit);
-
+    Seller findByEmail(String email);
+    Seller findByNameAndAddress(String name, String address);
 }

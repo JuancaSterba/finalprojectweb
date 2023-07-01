@@ -12,6 +12,7 @@ import com.itec1.finalprojectweb.repository.IShippingOrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,33 +46,64 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     public List<CustomerDTO> findAll() {
         List<Customer> customers = customerRepository.findAll();
-        List<CustomerDTO> list = new ArrayList<>();
+        List<CustomerDTO> result = new ArrayList<>();
         for (Customer customer : customers) {
-            CustomerDTO map = mapper.map(customer, CustomerDTO.class);
-            list.add(map);
+            result.add(mapper.map(customer, CustomerDTO.class));
         }
-        return list;
+        return result;
     }
 
     @Override
     public CustomerDTO save(CustomerDTO customerDTO) throws DataAccessException, InvalidDataException {
-        if (!validateDTO(customerDTO)) {
-            throw new InvalidDataException("Invalid customer data");
+        validateDTO(customerDTO);
+
+        String cuit = customerDTO.getCuit();
+        String email = customerDTO.getEmail();
+
+        // Verificar si ya existe un cliente con el mismo CUIT
+        Customer existingCustomerByCuit = customerRepository.findByCuit(cuit);
+        if (existingCustomerByCuit != null) {
+            throw new DuplicateKeyException("Customer with CUIT already exists: " + cuit);
         }
 
-        Customer existingCustomer = customerRepository.findByCuit(customerDTO.getCuit());
-        if (existingCustomer != null) {
-            throw new DuplicateKeyException("Customer with CUIT already exists: " + customerDTO.getCuit());
+        // Verificar si ya existe un cliente con el mismo correo electrónico
+        Customer existingCustomerByEmail = customerRepository.findByEmail(email);
+        if (existingCustomerByEmail != null) {
+            throw new DuplicateKeyException("Customer with Email already exists: " + email);
         }
 
-        existingCustomer = customerRepository.findByEmail(customerDTO.getEmail());
-        if (existingCustomer != null) {
-            throw new DuplicateKeyException("Customer with Email already exists: " + customerDTO.getEmail());
+        // Verificar si ya existe un cliente con los mismos datos a guardar
+        Customer existingCustomerByData = customerRepository.findByCuitAndDniAndEmail(cuit, customerDTO.getDni(), customerDTO.getEmail());
+        if (existingCustomerByData != null) {
+            throw new InvalidDataException("Ya existe un cliente con los mismos datos");
         }
 
         Customer customer = mapper.map(customerDTO, Customer.class);
         Customer savedCustomer = customerRepository.save(customer);
         return mapper.map(savedCustomer, CustomerDTO.class);
+    }
+
+    @Override
+    public CustomerDTO update(CustomerDTO customerDTO, Long id) throws DataAccessException, InvalidDataException {
+        if (!validateDTO(customerDTO)) {
+            throw new InvalidDataException("Invalid customer data");
+        }
+
+        Customer existingCustomer = customerRepository.findById(id).orElse(null);
+        if (existingCustomer != null) {
+            existingCustomer.setName(customerDTO.getName());
+            existingCustomer.setCuit(customerDTO.getCuit());
+            existingCustomer.setDni(customerDTO.getDni());
+            existingCustomer.setAddress(customerDTO.getAddress());
+            existingCustomer.setPhoneNumber(customerDTO.getPhoneNumber());
+            existingCustomer.setEmail(customerDTO.getEmail());
+
+            existingCustomer = customerRepository.save(existingCustomer);
+
+            return mapper.map(existingCustomer, CustomerDTO.class);
+        } else {
+            throw new NotFoundException("Customer not found with ID: " + id);
+        }
     }
 
     @Override
@@ -100,7 +132,7 @@ public class CustomerServiceImpl implements ICustomerService {
         try{
             customerRepository.deleteById(id);
         } catch (DataAccessException e) {
-            throw new DataAccessException("Error al guardar el cliente", e) {};
+            throw new DataAccessException("Error al borrar el cliente", e) {};
         }
     }
 
@@ -120,25 +152,6 @@ public class CustomerServiceImpl implements ICustomerService {
             return mapper.map(customer, CustomerDTO.class);
         }
         return null;
-    }
-
-    @Override
-    public CustomerDTO updateById(Long id, CustomerDTO customerDTO) throws DataAccessException {
-        Customer existingCustomer = customerRepository.findById(id).orElse(null);
-        if (existingCustomer != null) {
-            existingCustomer.setName(customerDTO.getName());
-            existingCustomer.setCuit(customerDTO.getCuit());
-            existingCustomer.setDni(customerDTO.getDni());
-            existingCustomer.setAddress(customerDTO.getAddress());
-            existingCustomer.setPhoneNumber(customerDTO.getPhoneNumber());
-            existingCustomer.setEmail(customerDTO.getEmail());
-
-            existingCustomer = customerRepository.save(existingCustomer);
-
-            return mapper.map(existingCustomer, CustomerDTO.class);
-        } else {
-            throw new NotFoundException("Customer not found with ID: " + id);
-        }
     }
 
     @Override

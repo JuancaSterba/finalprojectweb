@@ -12,14 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShippingOrderDTO {
-    private Long id;
-    private CustomerDTO customer;
-    private ShippingNoteDTO shippingNote;
-    private SectorDTO originSector;
-    private SectorDTO destinySector;
-    private List<OrderLineDTO> orderLines;
-    private TrackingDTO tracking;
-    private OrderStatus orderStatus;
+    private Long customerId;
+    private Long shippingNoteId;
+    private Long originSectorId;
+    private Long destinySectorId;
+    private List<Long> orderLinesId;
+    private Long trackingId;
+    private String orderStatus;
     private String number;
     private LocalDate startDate;
     private LocalDate finishDate;

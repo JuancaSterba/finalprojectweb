@@ -2,6 +2,7 @@ package com.itec1.finalprojectweb.service;
 
 import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
 import com.itec1.finalprojectweb.entity.ShippingOrder;
+import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.repository.IShippingOrderRepository;
 import org.modelmapper.ModelMapper;
@@ -47,6 +48,11 @@ public class ShippingOrderServiceImpl implements IShippingOrderService {
         ShippingOrder shippingOrder = mapper.map(shippingOrderDTO, ShippingOrder.class);
         shippingOrder = shippingOrderRepository.save(shippingOrder);
         return mapper.map(shippingOrder, ShippingOrderDTO.class);
+    }
+
+    @Override
+    public ShippingOrderDTO update(ShippingOrderDTO shippingOrderDTO, Long id) throws DataAccessException, InvalidDataException {
+        return null;
     }
 
     @Override

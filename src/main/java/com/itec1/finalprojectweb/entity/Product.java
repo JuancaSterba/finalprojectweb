@@ -18,15 +18,18 @@ public class Product {
 
     @Column(nullable = false)
     private String description;
+
     private float height; // alto
     private float length; // largo
     private float width; // ancho
     private float weight; // peso
 
-    @Column(name = "seller_id", nullable = false)
-    private Long sellerId;
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller;
 
-    @Column(name = "category_id", nullable = false)
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private ProductCategory category;
 
 }

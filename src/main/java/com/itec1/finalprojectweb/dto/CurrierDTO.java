@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CurrierDTO {
-    private Long id;
     private String name;
     private String cuit;
     private String phoneNumber;

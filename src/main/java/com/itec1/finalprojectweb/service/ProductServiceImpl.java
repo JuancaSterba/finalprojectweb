@@ -7,6 +7,7 @@ import com.itec1.finalprojectweb.exception.NotFoundException;
 import com.itec1.finalprojectweb.repository.IProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,9 +51,48 @@ public class ProductServiceImpl implements IProductService{
     public ProductDTO save(ProductDTO productDTO) throws DataAccessException, InvalidDataException {
         validateDTO(productDTO);
 
+        String description = productDTO.getDescription();
+        Long sellerId = productDTO.getSellerId();
+
+        // Verificar si ya existe un producto con la misma descripción y el mismo vendedor
+        List<Product> existingProducts = productRepository.findByDescriptionAndSellerId(description, sellerId);
+        if (!existingProducts.isEmpty()) {
+            throw new InvalidDataException("Ya existe un producto con la misma descripción y el mismo vendedor");
+        }
+
         Product product = mapper.map(productDTO, Product.class);
         Product savedProduct = productRepository.save(product);
         return mapper.map(savedProduct, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO update(ProductDTO productDTO, Long id) throws DataAccessException, InvalidDataException {
+        validateDTO(productDTO);
+
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+
+            // Verificar si existen otros productos con los mismos datos a actualizar
+            List<Product> existingProducts = productRepository.findByDescriptionAndSellerId(productDTO.getDescription(), productDTO.getSellerId());
+            existingProducts.remove(product); // Excluir el producto actual de la lista
+
+            if (!existingProducts.isEmpty()) {
+                throw new InvalidDataException("Los datos a actualizar ya existen en otro producto");
+            }
+
+            product.setDescription(productDTO.getDescription());
+            product.setHeight(productDTO.getHeight());
+            product.setLength(productDTO.getLength());
+            product.setWidth(productDTO.getWidth());
+            product.setWeight(productDTO.getWeight());
+            // Actualiza otros atributos según sea necesario
+
+            Product updatedProduct = productRepository.save(product);
+            return mapper.map(updatedProduct, ProductDTO.class);
+        } else {
+            throw new NotFoundException("Product not found with ID: " + id);
+        }
     }
 
     public boolean validateDTO(ProductDTO productDTO) throws InvalidDataException {
@@ -75,7 +115,11 @@ public class ProductServiceImpl implements IProductService{
 
     @Override
     public void deleteById(Long id) throws DataAccessException {
-        productRepository.deleteById(id);
+        try {
+            productRepository.deleteById(id);
+        } catch (DataAccessException e) {
+            throw new DataAccessException("Error al borrar el producto", e) {};
+        }
     }
 
     @Override
@@ -109,24 +153,5 @@ public class ProductServiceImpl implements IProductService{
             list.add(map);
         }
         return list;
-    }
-
-    @Override
-    public ProductDTO updateById(Long id, ProductDTO productDTO) throws DataAccessException {
-        Optional<Product> productOptional = productRepository.findById(id);
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            product.setDescription(productDTO.getDescription());
-            product.setHeight(productDTO.getHeight());
-            product.setLength(productDTO.getLength());
-            product.setWidth(productDTO.getWidth());
-            product.setWeight(productDTO.getWeight());
-            // Actualiza otros atributos según sea necesario
-
-            Product updatedProduct = productRepository.save(product);
-            return mapper.map(updatedProduct, ProductDTO.class);
-        } else {
-            throw new NotFoundException("Product not found with ID: " + id);
-        }
     }
 }

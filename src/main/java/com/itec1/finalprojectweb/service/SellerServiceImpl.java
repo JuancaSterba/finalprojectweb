@@ -48,18 +48,55 @@ public class SellerServiceImpl implements ISellerService {
 
     @Override
     public SellerDTO save(SellerDTO sellerDTO) throws DataAccessException, InvalidDataException {
-        if (!validateDTO(sellerDTO)) {
-            throw new DataAccessException("Invalid seller data") {};
+        validateDTO(sellerDTO);
+
+        String cuit = sellerDTO.getCuit();
+        String email = sellerDTO.getEmail();
+
+        // Verificar si ya existe un vendedor con el mismo CUIT
+        Seller existingSellerByCuit = sellerRepository.findByCuit(cuit);
+        if (existingSellerByCuit != null) {
+            throw new InvalidDataException("Ya existe un vendedor con el mismo CUIT");
         }
 
-        Seller existingSeller = sellerRepository.findByCuit(sellerDTO.getCuit());
-        if (existingSeller != null) {
-            throw new DataAccessException("Seller already exists") {};
+        // Verificar si ya existe un vendedor con el mismo correo electrónico
+        Seller existingSellerByEmail = sellerRepository.findByEmail(email);
+        if (existingSellerByEmail != null) {
+            throw new InvalidDataException("Ya existe un vendedor con el mismo correo electrónico");
+        }
+
+        // Verificar si ya existe un vendedor con los mismos datos a guardar
+        Seller existingSellerByData = sellerRepository.findByNameAndAddress(sellerDTO.getName(), sellerDTO.getAddress());
+        if (existingSellerByData != null) {
+            throw new InvalidDataException("Ya existe un vendedor con los mismos datos");
         }
 
         Seller seller = mapper.map(sellerDTO, Seller.class);
         Seller savedSeller = sellerRepository.save(seller);
         return mapper.map(savedSeller, SellerDTO.class);
+    }
+
+    @Override
+    public SellerDTO update(SellerDTO sellerDTO, Long id) throws DataAccessException, InvalidDataException {
+        if (!validateDTO(sellerDTO)) {
+            throw new InvalidDataException("Invalid seller data");
+        }
+
+        Optional<Seller> sellerOptional = sellerRepository.findById(id);
+        if (sellerOptional.isPresent()) {
+            Seller seller = sellerOptional.get();
+            // Actualizar los atributos del vendedor con los valores del DTO
+            seller.setName(sellerDTO.getName());
+            seller.setAddress(sellerDTO.getAddress());
+            seller.setCuit(sellerDTO.getCuit());
+            seller.setPhoneNumber(sellerDTO.getPhoneNumber());
+            seller.setEmail(sellerDTO.getEmail());
+
+            Seller updatedSeller = sellerRepository.save(seller);
+            return mapper.map(updatedSeller, SellerDTO.class);
+        } else {
+            throw new NotFoundException("Seller not found with ID: " + id);
+        }
     }
 
     @Override
@@ -88,29 +125,6 @@ public class SellerServiceImpl implements ISellerService {
             return mapper.map(seller, SellerDTO.class);
         } else {
             throw new NotFoundException("Seller not found with CUIT: " + cuit);
-        }
-    }
-
-    @Override
-    public SellerDTO updateById(SellerDTO sellerDTO, Long id) throws DataAccessException, InvalidDataException {
-        if (!validateDTO(sellerDTO)) {
-            throw new InvalidDataException("Invalid seller data");
-        }
-
-        Optional<Seller> sellerOptional = sellerRepository.findById(id);
-        if (sellerOptional.isPresent()) {
-            Seller seller = sellerOptional.get();
-            // Actualizar los atributos del vendedor con los valores del DTO
-            seller.setName(sellerDTO.getName());
-            seller.setAddress(sellerDTO.getAddress());
-            seller.setCuit(sellerDTO.getCuit());
-            seller.setPhoneNumber(sellerDTO.getPhoneNumber());
-            seller.setEmail(sellerDTO.getEmail());
-
-            Seller updatedSeller = sellerRepository.save(seller);
-            return mapper.map(updatedSeller, SellerDTO.class);
-        } else {
-            throw new NotFoundException("Seller not found with ID: " + id);
         }
     }
 }

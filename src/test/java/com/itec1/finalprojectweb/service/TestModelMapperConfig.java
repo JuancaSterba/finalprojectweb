@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class TestModelMapperConfig {
 
     @Bean
-    public ModelMapper modelMapper() {
+    public ModelMapper mapper() {
         ModelMapper modelMapper = new ModelMapper();
 
         // Configurar el mapeo entre Customer y CustomerDTO si es necesario

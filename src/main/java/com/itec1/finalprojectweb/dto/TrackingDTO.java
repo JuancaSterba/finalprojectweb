@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrackingDTO {
-    private Long id;
     private float latitude;
     private float longitude;
 }

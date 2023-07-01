@@ -104,8 +104,10 @@ public class CustomerController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDTO> updateCustomerById(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         try {
-            CustomerDTO updatedCustomer = customerService.updateById(id, customerDTO);
+            CustomerDTO updatedCustomer = customerService.update(customerDTO, id);
             return ResponseEntity.ok(updatedCustomer);
+        } catch (InvalidDataException e) {
+            return ResponseEntity.badRequest().build();
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } catch (NotFoundException e) {

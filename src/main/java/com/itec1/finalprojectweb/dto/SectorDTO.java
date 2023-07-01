@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SectorDTO {
-    private Long id;
     private String sectorCode;
     private String description;
 }
