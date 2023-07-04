@@ -1,6 +1,9 @@
 package com.itec1.finalprojectweb.controller;
 
 import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
+import com.itec1.finalprojectweb.dto.ShippingOrderStatusDTO;
+import com.itec1.finalprojectweb.entity.OrderStatus;
+import com.itec1.finalprojectweb.entity.ShippingOrder;
 import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.service.IShippingOrderService;
 import org.springframework.dao.DataAccessException;
@@ -65,4 +68,32 @@ public class ShippingOrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ShippingOrderDTO> updateShippingOrderStatus(@PathVariable Long id, @RequestBody ShippingOrderStatusDTO statusDTO) {
+        try {
+            // Actualizar el estado de la ShippingOrder utilizando el servicio
+            ShippingOrderDTO updatedShippingOrderDTO = shippingOrderService.updateShippingOrderStatus(id, statusDTO);
+
+            // Devolver el DTO actualizado en la respuesta
+            return ResponseEntity.ok(updatedShippingOrderDTO);
+        } catch (InvalidDataException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/{shippingOrderId}/rating")
+    public ResponseEntity<String> rateShippingOrder(@PathVariable Long shippingOrderId, @RequestBody RatingDTO ratingDTO) {
+        try {
+            // Aquí puedes implementar la lógica para guardar la calificación del transporte
+            // Utiliza el ID de la orden de envío (shippingOrderId) y los datos de la calificación (ratingDTO)
+
+            // Devuelve un mensaje de éxito en la respuesta
+            return ResponseEntity.ok("Calificación del transporte guardada exitosamente");
+        } catch (Exception e) {
+            // En caso de error, devuelve un mensaje de error en la respuesta
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la calificación del transporte");
+        }
+    }
+
 }

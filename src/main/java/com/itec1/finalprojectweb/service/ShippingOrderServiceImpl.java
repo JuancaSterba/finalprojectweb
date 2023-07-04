@@ -1,6 +1,7 @@
 package com.itec1.finalprojectweb.service;
 
 import com.itec1.finalprojectweb.dto.ShippingOrderDTO;
+import com.itec1.finalprojectweb.dto.ShippingOrderStatusDTO;
 import com.itec1.finalprojectweb.entity.ShippingOrder;
 import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.exception.NotFoundException;
@@ -105,4 +106,12 @@ public class ShippingOrderServiceImpl implements IShippingOrderService {
     public void deleteShippingOrder(Long id) {
         shippingOrderRepository.deleteById(id);
     }
+
+    @Override
+    public ShippingOrderDTO updateShippingOrderStatus(Long id, ShippingOrderStatusDTO statusDTO) throws InvalidDataException {
+        ShippingOrderDTO shippingOrderDTO = getShippingOrderById(id);
+        shippingOrderDTO.setOrderStatus(statusDTO.getNewStatus());
+        return save(shippingOrderDTO);
+    }
+
 }

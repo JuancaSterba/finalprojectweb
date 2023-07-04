@@ -3,6 +3,9 @@ package com.itec1.finalprojectweb.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "trackings")
 @Getter
@@ -20,10 +23,7 @@ public class Tracking {
     @JoinColumn(name = "shipping_order_id", nullable = false)
     private ShippingOrder shippingOrder;
 
-    @Column(nullable = false)
-    private float latitude;
-
-    @Column(nullable = false)
-    private float longitude;
+    @OneToMany(mappedBy = "tracking", cascade = CascadeType.ALL)
+    private List<Location> locations = new ArrayList<>();
 
 }

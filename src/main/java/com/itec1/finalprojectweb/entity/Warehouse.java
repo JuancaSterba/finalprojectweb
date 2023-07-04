@@ -17,10 +17,6 @@ public class Warehouse {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
-
-    @ManyToOne
     @JoinColumn(name = "sector_id", nullable = false)
     private Sector sector;
 

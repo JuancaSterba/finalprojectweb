@@ -17,7 +17,7 @@ public class ShippingOrderDTO {
     private Long originSectorId;
     private Long destinySectorId;
     private List<Long> orderLinesId;
-    private Long trackingId;
+    private List<Long> trackingId;
     private String orderStatus;
     private String number;
     private LocalDate startDate;
