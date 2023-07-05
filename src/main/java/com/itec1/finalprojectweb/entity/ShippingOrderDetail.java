@@ -1,6 +1,8 @@
 package com.itec1.finalprojectweb.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -10,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class OrderLine {
+public class ShippingOrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +29,10 @@ public class OrderLine {
     @Column(nullable = false)
     private int quantity;
 
-    private int rating;
+    @Min(0)
+    @Max(9)
+    private Integer rating;
+
+    private boolean deleted = false;
 
 }

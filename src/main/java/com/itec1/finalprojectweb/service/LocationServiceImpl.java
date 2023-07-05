@@ -1,7 +1,7 @@
 package com.itec1.finalprojectweb.service;
 
 import com.itec1.finalprojectweb.dto.LocationDTO;
-import com.itec1.finalprojectweb.entity.Location;
+import com.itec1.finalprojectweb.entity.TrackingLocation;
 import com.itec1.finalprojectweb.entity.Tracking;
 import com.itec1.finalprojectweb.exception.InvalidDataException;
 import com.itec1.finalprojectweb.repository.ILocationRepository;
@@ -49,19 +49,19 @@ public class LocationServiceImpl implements ILocationService {
         validateDTO(locationDTO);
 
         // Convertir el DTO a una entidad de ubicación utilizando ModelMapper
-        Location location = mapper.map(locationDTO, Location.class);
+        TrackingLocation trackingLocation = mapper.map(locationDTO, TrackingLocation.class);
 
         // Asignar el objeto Tracking a la ubicación
-        location.setTracking(tracking);
+        trackingLocation.setTracking(tracking);
 
         // Agregar la ubicación a la lista de ubicaciones del Tracking
-        tracking.getLocations().add(location);
+        tracking.getTrackingLocations().add(trackingLocation);
 
         // Guardar la ubicación en la base de datos
-        locationRepository.save(location);
+        locationRepository.save(trackingLocation);
 
         // Convertir la entidad guardada a un DTO utilizando ModelMapper y devolverlo
-        return mapper.map(location, LocationDTO.class);
+        return mapper.map(trackingLocation, LocationDTO.class);
     }
 
     @Override

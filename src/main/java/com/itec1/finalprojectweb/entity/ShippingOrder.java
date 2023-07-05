@@ -1,9 +1,12 @@
 package com.itec1.finalprojectweb.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,35 +22,50 @@ public class ShippingOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String shippingOrderCode;
+
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "shipping_note_id", nullable = false)
-    private ShippingNote shippingNote;
+    @OneToMany(mappedBy = "shippingOrder")
+    private List<ShippingOrderDetail> shippingOrderDetails;
 
     @ManyToOne
-    @JoinColumn(name = "sector_rigen_id", nullable = false)
-    private Sector originSector;
+    @JoinColumn(name = "origin_warehouse_id", nullable = false)
+    private Warehouse originWarehouse;
 
     @ManyToOne
-    @JoinColumn(name = "sector_destino_id", nullable = false)
-    private Sector destinySector;
+    @JoinColumn(name = "destination_warehouse_id", nullable = false)
+    private Warehouse destinationWarehouse;
 
-    @OneToMany(mappedBy = "shippingOrder", cascade = CascadeType.ALL)
-    private List<OrderLine> orderLines;
-
-    @OneToOne(mappedBy = "shippingOrder", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "tracking")
     private Tracking tracking;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private OrderStatus orderStatus;
+    private ShippingOrderStatus shippingOrderStatus = ShippingOrderStatus.PENDING;
 
-    private String number;
+    @Temporal(TemporalType.DATE)
     private LocalDate startDate;
-    private LocalDate finishDate;
-    private int currierRating;
+
+    @Temporal(TemporalType.TIME)
+    private LocalDateTime startTime;
+
+    @Temporal(TemporalType.DATE)
+    private LocalDate endDate;
+
+    @Temporal(TemporalType.TIME)
+    private LocalDateTime endTime;
+
+    @Min(0)
+    @Max(9)
+    private Integer currierRating;
+
+    @ManyToOne
+    @JoinColumn(name = "shipping_note_id")
+    private ShippingOrderNote shippingOrderNote;
+
+    private boolean deleted = false;
 
 }

@@ -17,13 +17,23 @@ public class Currier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String cuit;
+
+    @Column(nullable = false)
     private String phoneNumber;
+
+    @Column(nullable = false)
     private String email;
 
     @ManyToOne
     @JoinColumn(name = "currier_type_id", nullable = false)
     private CurrierType currierType;
+
+    private boolean deleted = false;
 
 }

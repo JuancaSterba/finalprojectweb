@@ -4,20 +4,21 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "sectors")
+@Table(name = "warehouses")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Sector {
+public class WarehouseSector {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String sectorCode;
+    private Warehouse warehouse;
     private String description;
+
+    private boolean deleted = false;
 
 }

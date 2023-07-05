@@ -24,6 +24,8 @@ public class Tracking {
     private ShippingOrder shippingOrder;
 
     @OneToMany(mappedBy = "tracking", cascade = CascadeType.ALL)
-    private List<Location> locations = new ArrayList<>();
+    private List<TrackingLocation> trackingLocations = new ArrayList<>();
+
+    private boolean deleted = false;
 
 }

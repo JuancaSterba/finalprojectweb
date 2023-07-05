@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDTO {
-
     private Long id;
     private String name;
     private String cuit;
@@ -16,5 +15,4 @@ public class CustomerDTO {
     private String address;
     private String phoneNumber;
     private String email;
-
 }

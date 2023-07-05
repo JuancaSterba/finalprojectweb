@@ -1,6 +1,6 @@
 package com.itec1.finalprojectweb.entity;
 
-public enum OrderStatus {
+public enum ShippingOrderStatus {
 
     PENDING, // Pendiente
     PROCESSING, // En proceso

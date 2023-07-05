@@ -16,14 +16,21 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "sector_id", nullable = false)
-    private Sector sector;
-
+    @Column(nullable = false)
     private String warehouseCode;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
     private String phoneNumber;
+
+    @Column(nullable = false)
     private String email;
+
+    private boolean deleted = false;
 
 }

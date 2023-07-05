@@ -1,6 +1,5 @@
 package com.itec1.finalprojectweb.dto;
 
-import com.itec1.finalprojectweb.entity.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShippingOrderDTO {
+    private Long id;
     private Long customerId;
     private Long shippingNoteId;
     private Long originSectorId;

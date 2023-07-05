@@ -12,5 +12,5 @@ public class CurrierDTO {
     private String cuit;
     private String phoneNumber;
     private String email;
-    private CurrierTypeDTO currierType;
+    private Long currierTypeId;
 }

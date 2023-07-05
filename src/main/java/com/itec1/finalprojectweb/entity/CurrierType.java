@@ -21,4 +21,6 @@ public class CurrierType {
     @Column(nullable = false)
     private String description;
 
+    private boolean deleted = false;
+
 }

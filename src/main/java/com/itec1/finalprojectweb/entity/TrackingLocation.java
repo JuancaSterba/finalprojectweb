@@ -12,13 +12,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Location {
+public class TrackingLocation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "tracking_id", nullable = false)
+    private Tracking tracking;
 
-    @Column(nullable = false)
+    @Id
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateTime;
 
     @Column(nullable = false)
@@ -27,8 +29,6 @@ public class Location {
     @Column(nullable = false)
     private Float longitude;
 
-    @ManyToOne
-    @JoinColumn(name = "tracking_id", nullable = false)
-    private Tracking tracking;
+    private boolean deleted = false;
 
 }

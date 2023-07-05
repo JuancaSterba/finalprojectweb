@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationDTO {
-    private Integer id;
+    private Long id;
     private LocalDateTime dateTime;
     private Float latitude;
     private Float longitude;

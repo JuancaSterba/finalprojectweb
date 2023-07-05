@@ -19,4 +19,6 @@ public class ProductCategory {
     @Column(nullable = false)
     private String description;
 
+    private boolean deleted = false;
+
 }
